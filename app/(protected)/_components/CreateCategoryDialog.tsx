@@ -163,7 +163,7 @@ function CreateCategoryDiv({ type, successCallback, open, onClose }: Props) {
             <FormField
               control={form.control}
               name="icon"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
                   <FormLabel>Ícone</FormLabel>
                   <FormControl>
