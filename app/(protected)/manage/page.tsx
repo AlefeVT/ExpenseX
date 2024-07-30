@@ -120,7 +120,7 @@ function CategoryList({ type }: { type: TransactionType }) {
                 ) : (
                   <span className="text-red-500">despesa</span>
                 )}{' '}
-                encontrada. Clique em "Criar categoria" para adicionar novas.
+                encontrada. Clique em &quot;Criar categoria&quot; para adicionar novas.
               </p>
             </div>
           )}
