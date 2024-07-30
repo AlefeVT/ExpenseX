@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import Navbar from "./_components/Navbar";
+import { ReactNode } from 'react';
+import Navbar from './_components/Navbar';
 
 export default function layout({ children }: { children: ReactNode }) {
   return (
@@ -7,5 +7,5 @@ export default function layout({ children }: { children: ReactNode }) {
       <Navbar></Navbar>
       <div className="w-full">{children}</div>
     </div>
-  )
+  );
 }

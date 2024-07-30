@@ -1,34 +1,36 @@
-"use server";
+'use server';
 
-import { currentUser } from "@/lib/auth";
-import { UpdateUserCurrencySchema } from "@/schemas/userSettings";
-import { PrismaClient } from "@prisma/client";
+import { currentUser } from '@/lib/auth';
+import { UpdateUserCurrencySchema } from '@/schemas/userSettings';
+import { PrismaClient } from '@prisma/client';
 
-export async function UpdateUserCurrency(currency: string): Promise<{ userId: string; currency: string; }> {
-    const prisma = new PrismaClient();
+export async function UpdateUserCurrency(
+  currency: string
+): Promise<{ userId: string; currency: string }> {
+  const prisma = new PrismaClient();
 
-    const parsedBody = UpdateUserCurrencySchema.safeParse({
-        currency,
-    });
+  const parsedBody = UpdateUserCurrencySchema.safeParse({
+    currency,
+  });
 
-    if (!parsedBody.success) {
-        throw new Error(parsedBody.error.message);
-    }
+  if (!parsedBody.success) {
+    throw new Error(parsedBody.error.message);
+  }
 
-    const user = await currentUser();
+  const user = await currentUser();
 
-    if (!user) {
-        throw new Error('Usuário não autenticado.');
-    }
+  if (!user) {
+    throw new Error('Usuário não autenticado.');
+  }
 
-    const userSettings = await prisma.userSettings.update({
-        where: {
-            userId: user.id,
-        },
-        data: {
-            currency,
-        },
-    });
+  const userSettings = await prisma.userSettings.update({
+    where: {
+      userId: user.id,
+    },
+    data: {
+      currency,
+    },
+  });
 
-    return { userId: userSettings.userId, currency: userSettings.currency };
+  return { userId: userSettings.userId, currency: userSettings.currency };
 }

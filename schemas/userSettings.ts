@@ -1,12 +1,12 @@
-import { Currencies } from "@/lib/currencies";
-import { z } from "zod";
+import { Currencies } from '@/lib/currencies';
+import { z } from 'zod';
 
 export const UpdateUserCurrencySchema = z.object({
-    currency: z.custom(value => {
-        const found = Currencies.some((c) => c.value === value);
-        if(!found) {
-            throw new Error(`Moeda inválida: ${value}`);
-        }
-        return value;
-    })
-})
+  currency: z.custom((value) => {
+    const found = Currencies.some((c) => c.value === value);
+    if (!found) {
+      throw new Error(`Moeda inválida: ${value}`);
+    }
+    return value;
+  }),
+});

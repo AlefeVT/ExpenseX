@@ -1,1 +1,1 @@
-export type Period = {year: number; month: number}
+export type Period = { year: number; month: number };

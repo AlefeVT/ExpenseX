@@ -75,7 +75,12 @@ export const ResetForm = () => {
           </div>
           <FormError message={error} />
           <FormSuccess message={success} />
-          <Button type="submit" disabled={isPending} variant={'outline'} className="w-full">
+          <Button
+            type="submit"
+            disabled={isPending}
+            variant={'outline'}
+            className="w-full"
+          >
             Enviar e-mail de redefinição
           </Button>
         </form>
