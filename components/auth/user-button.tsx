@@ -31,8 +31,13 @@ export const UserButton = ({ className }: UserButton) => {
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-40 bg-gray-100 dark:bg-gray-950 text-gray-900 dark:text-gray-400" align="end">
-        <DropdownMenuItem className='' disabled>{user?.name || user?.email || ''}</DropdownMenuItem>
+      <DropdownMenuContent
+        className="w-40 bg-gray-100 dark:bg-gray-950 text-gray-900 dark:text-gray-400"
+        align="end"
+      >
+        <DropdownMenuItem className="" disabled>
+          {user?.name || user?.email || ''}
+        </DropdownMenuItem>
 
         <DropdownMenuSeparator />
 

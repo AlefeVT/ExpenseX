@@ -1,1 +1,1 @@
-export type TransactionType = "renda" | "despesa";
+export type TransactionType = 'renda' | 'despesa';

@@ -7,7 +7,6 @@ import { Toaster } from '@/components/ui/sonner';
 import React from 'react';
 import ThemaProvider from './_components/ThemaProvider';
 
-
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -26,14 +25,10 @@ export default async function RootLayout({
     <SessionProvider session={session}>
       <html lang="pt-br" className="overflow-y-hidden overflow-x-hidden">
         <body className={inter.className}>
-
-
           <ThemaProvider>
             <Toaster />
             {children}
           </ThemaProvider>
-
-
         </body>
       </html>
     </SessionProvider>

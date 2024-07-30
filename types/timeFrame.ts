@@ -1,1 +1,1 @@
-export type Timeframe = "month" | "year";
+export type Timeframe = 'month' | 'year';

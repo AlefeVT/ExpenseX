@@ -1,7 +1,7 @@
-"use server"
+'use server';
 
-import { currentUser } from "@/lib/auth";
-import { PrismaClient } from "@prisma/client";
+import { currentUser } from '@/lib/auth';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -15,7 +15,7 @@ interface TransactionData {
 export async function addTransactionsFromCSV(transactions: TransactionData[]) {
   const user = await currentUser();
   if (!user) {
-    throw new Error("Usuário não autenticado!");
+    throw new Error('Usuário não autenticado!');
   }
 
   for (const transaction of transactions) {
@@ -27,7 +27,10 @@ export async function addTransactionsFromCSV(transactions: TransactionData[]) {
   }
 }
 
-async function processTransaction(transaction: TransactionData, userId: string) {
+async function processTransaction(
+  transaction: TransactionData,
+  userId: string
+) {
   const { date, category, title, amount } = transaction;
 
   const amountFloat = parseAmount(amount);
@@ -41,13 +44,17 @@ async function processTransaction(transaction: TransactionData, userId: string) 
   }
 
   if (!title) {
-    throw new Error("Título da transação está indefinido ou vazio.");
+    throw new Error('Título da transação está indefinido ou vazio.');
   }
 
-  const transactionType = amountFloat < 0 ? "renda" : "despesa";
+  const transactionType = amountFloat < 0 ? 'renda' : 'despesa';
   const absoluteAmount = Math.abs(amountFloat);
 
-  const categoryRecord = await findOrCreateCategory(category, userId, transactionType);
+  const categoryRecord = await findOrCreateCategory(
+    category,
+    userId,
+    transactionType
+  );
 
   await prisma.transaction.create({
     data: {
@@ -58,7 +65,7 @@ async function processTransaction(transaction: TransactionData, userId: string) 
       type: transactionType,
       category: categoryRecord.name,
       categoryIcon: categoryRecord.icon,
-    }
+    },
   });
 
   await updateHistory(parsedDate, userId, absoluteAmount, transactionType);
@@ -74,12 +81,16 @@ function parseDate(dateStr: string): Date | null {
   return isNaN(date.getTime()) ? null : date;
 }
 
-async function findOrCreateCategory(name: string, userId: string, type: string) {
+async function findOrCreateCategory(
+  name: string,
+  userId: string,
+  type: string
+) {
   let category = await prisma.category.findFirst({
     where: {
       name,
-      userId
-    }
+      userId,
+    },
   });
 
   if (!category) {
@@ -87,17 +98,22 @@ async function findOrCreateCategory(name: string, userId: string, type: string) 
       data: {
         name,
         userId,
-        icon: "", // Defina um ícone padrão ou permita que o usuário escolha
+        icon: '', // Defina um ícone padrão ou permita que o usuário escolha
         type,
-      }
+      },
     });
   }
 
   return category;
 }
 
-async function updateHistory(date: Date, userId: string, amount: number, transactionType: string) {
-  const incrementField = transactionType === "despesa" ? "expense" : "income";
+async function updateHistory(
+  date: Date,
+  userId: string,
+  amount: number,
+  transactionType: string
+) {
+  const incrementField = transactionType === 'despesa' ? 'expense' : 'income';
 
   await prisma.monthHistory.upsert({
     where: {
@@ -106,21 +122,21 @@ async function updateHistory(date: Date, userId: string, amount: number, transac
         day: date.getUTCDate(),
         month: date.getUTCMonth(),
         year: date.getUTCFullYear(),
-      }
+      },
     },
     update: {
       [incrementField]: {
         increment: amount,
-      }
+      },
     },
     create: {
       userId,
       day: date.getUTCDate(),
       month: date.getUTCMonth(),
       year: date.getUTCFullYear(),
-      income: transactionType === "renda" ? amount : 0,
-      expense: transactionType === "despesa" ? amount : 0,
-    }
+      income: transactionType === 'renda' ? amount : 0,
+      expense: transactionType === 'despesa' ? amount : 0,
+    },
   });
 
   await prisma.yearHistory.upsert({
@@ -129,19 +145,19 @@ async function updateHistory(date: Date, userId: string, amount: number, transac
         userId,
         month: date.getUTCMonth(),
         year: date.getUTCFullYear(),
-      }
+      },
     },
     update: {
       [incrementField]: {
         increment: amount,
-      }
+      },
     },
     create: {
       userId,
       month: date.getUTCMonth(),
       year: date.getUTCFullYear(),
-      income: transactionType === "renda" ? amount : 0,
-      expense: transactionType === "despesa" ? amount : 0,
-    }
+      income: transactionType === 'renda' ? amount : 0,
+      expense: transactionType === 'despesa' ? amount : 0,
+    },
   });
 }
