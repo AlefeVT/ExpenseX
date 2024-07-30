@@ -1,7 +1,7 @@
 'use client';
 
 import { UserButton } from '@/components/auth/user-button';
-import { InitialLogo, Logo } from '@/components/logo/logo';
+import { InitialLogo } from '@/components/logo/logo';
 import { ThemeSwitcherBtn } from '@/components/themeSwitcherBtn/themeSwitcherBtn';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';

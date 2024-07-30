@@ -34,7 +34,7 @@ import { LuLoader2 } from 'react-icons/lu';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CreateTransaction } from '../_actions/transactions';
 import { toast } from 'sonner';
-import { format, isValid, parseISO, startOfDay } from 'date-fns';
+import { format, isValid, parseISO } from 'date-fns';
 import { DateToUTCDate } from '@/lib/helpers';
 import CreateCategoryDiv from '../../_components/CreateCategoryDialog';
 
