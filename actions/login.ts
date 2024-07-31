@@ -23,7 +23,7 @@ export const login = async (
   const validatedFields = LoginSchema.safeParse(values);
 
   if (!validatedFields.success) {
-    return { error: 'Invalid fields!' };
+    return { error: 'Campos inválidos!' };
   }
 
   const { email, password, code } = validatedFields.data;
@@ -34,21 +34,20 @@ export const login = async (
     return { error: 'E-mail não cadastrado no sistema!' };
   }
 
-  if (!existingUser.emailVerified) {
-    const verificationToken = await generateVerificationToken(
-      existingUser.email
-    );
+  // if (!existingUser.emailVerified) {
+  //   const verificationToken = await generateVerificationToken(
+  //     existingUser.email
+  //   );
 
-    await sendVerificationEmail(
-      verificationToken.email,
-      verificationToken.token
-    );
+  //   await sendVerificationEmail(
+  //     verificationToken.email,
+  //     verificationToken.token
+  //   );
 
-    return { success: 'E-mail de confirmação enviado!' };
-  }
+  //   return { success: 'E-mail de confirmação enviado!' };
+  // }
 
   if (existingUser.isTwoFactorEnabled && existingUser.email) {
-    // Check password before proceeding with 2FA
     const isPasswordValid = await comparePassword(
       password,
       existingUser.password
@@ -62,17 +61,17 @@ export const login = async (
       const twoFactorToken = await getTwoFactorTokenByEmail(existingUser.email);
 
       if (!twoFactorToken) {
-        return { error: 'Invalid code!' };
+        return { error: 'Código inválido!' };
       }
 
       if (twoFactorToken.token !== code) {
-        return { error: 'Invalid code!' };
+        return { error: 'Código inválido!' };
       }
 
       const hasExpired = new Date(twoFactorToken.expires) < new Date();
 
       if (hasExpired) {
-        return { error: 'Code expired!' };
+        return { error: 'Código expirou!' };
       }
 
       await db.twoFactorToken.delete({
@@ -112,7 +111,7 @@ export const login = async (
         case 'CredentialsSignin':
           return { error: 'Credenciais inválidas!' };
         default:
-          return { error: 'Something went wrong!' };
+          return { error: 'Algo deu errado!' };
       }
     }
 

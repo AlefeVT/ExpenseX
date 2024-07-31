@@ -17,13 +17,13 @@ export const settings = async (values: z.infer<typeof SettingsSchema>) => {
   const user = await currentUser();
 
   if (!user) {
-    return { error: 'Unauthorized' };
+    return { error: 'Não autorizado' };
   }
 
   const dbUser = await getUserById(user.id);
 
   if (!dbUser) {
-    return { error: 'Unauthorized' };
+    return { error: 'Não autorizado' };
   }
 
   if (user.isOAuth) {
@@ -37,7 +37,7 @@ export const settings = async (values: z.infer<typeof SettingsSchema>) => {
     const existingUser = await getUserByEmail(values.email);
 
     if (existingUser && existingUser.id !== user.id) {
-      return { error: 'Email already in use!' };
+      return { error: 'Email já em uso!' };
     }
 
     const verificationToken = await generateVerificationToken(values.email);
@@ -46,7 +46,7 @@ export const settings = async (values: z.infer<typeof SettingsSchema>) => {
       verificationToken.token
     );
 
-    return { success: 'Verification email sent!' };
+    return { success: 'E-mail de verificação enviado!' };
   }
 
   if (values.password && values.newPassword && dbUser.password) {
@@ -56,7 +56,7 @@ export const settings = async (values: z.infer<typeof SettingsSchema>) => {
     );
 
     if (!passwordsMatch) {
-      return { error: 'Incorrect password!' };
+      return { error: 'Senha incorreta!' };
     }
 
     const hashedPassword = await hashPassword(values.newPassword);

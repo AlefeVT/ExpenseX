@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'ExpenseX',
-  description: 'Sistema de gerenciamento de emprestimos',
+  description: 'Sistema de gerenciamento financeiro',
 };
 
 export default async function RootLayout({
