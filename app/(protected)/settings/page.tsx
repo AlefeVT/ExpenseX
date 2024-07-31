@@ -183,7 +183,7 @@ const SettingsPage = () => {
                 </>
               )} */}
 
-              {user?.isOAuth === false && (
+              {/* {user?.isOAuth === false && (
                 <FormField
                   control={form.control}
                   name="isTwoFactorEnabled"
@@ -205,7 +205,7 @@ const SettingsPage = () => {
                     </FormItem>
                   )}
                 />
-              )}
+              )} */}
             </div>
             <FormError message={error} />
             <FormSuccess message={success} />
