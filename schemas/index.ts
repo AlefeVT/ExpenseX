@@ -69,18 +69,3 @@ export const RegisterSchema = z.object({
     message: 'O nome é obrigatório',
   }),
 });
-
-export const ItemSchema = z.object({
-  id: z.string().min(1, { message: 'ID é obrigatório' }),
-  title: z.string().min(1, { message: 'Nome é obrigatório' }),
-  description: z.string().min(1, { message: 'Descrição é obrigatória' }),
-  category: z.string().min(1, { message: 'Categoria é obrigatória' }),
-  location: z.string().min(1, { message: 'Localização é obrigatória' }),
-  date: z
-    .string()
-    .min(1, { message: 'Data é obrigatória' })
-    .refine((date) => !isNaN(Date.parse(date)), { message: 'Data inválida' }),
-  keywords: z.string().min(1, { message: 'Palavras-chave são obrigatórias' }),
-  image: z.union([z.string(), z.null()]),
-  imagePreview: z.string().nullable(),
-});

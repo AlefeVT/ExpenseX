@@ -32,7 +32,7 @@ export const NewVerificationForm = () => {
         setError(data.error);
       })
       .catch(() => {
-        setError('Something went wrong!');
+        setError('Algo deu errado!');
       });
   }, [token, success, error]);
 
