@@ -34,9 +34,10 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     },
   });
 
+  const domain = process.env.NEXT_PUBLIC_APP_URL;
+
   const verificationToken = await generateVerificationToken(email);
+  const confirmLink = `${domain}/auth/new-verification?token=${verificationToken.token}`;
 
-  await sendVerificationEmail(verificationToken.email, verificationToken.token);
-
-  return { success: 'E-mail de confirmação enviado!' };
+  return { success: 'Usuário registrado com sucesso!', confirmLink };
 };

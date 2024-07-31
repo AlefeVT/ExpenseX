@@ -38,5 +38,6 @@ export const newVerification = async (token: string) => {
   //   where: { id: existingToken.id },
   // });
 
-  return { success: 'Email verificado!' };
+  // return { success: 'Email verificado!' };
+  return { success: 'Conta verificada!' };
 };
