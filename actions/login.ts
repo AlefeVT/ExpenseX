@@ -16,10 +16,15 @@ import { comparePassword } from '@/utils/hash';
 
 const db = new PrismaClient();
 
+type LoginResponse =
+  | { error: string; twoFactor?: undefined }
+  | { twoFactor: true; error?: undefined }
+  | { success: string; error?: undefined; twoFactor?: undefined };
+
 export const login = async (
   values: z.infer<typeof LoginSchema>,
   callbackUrl?: string | null
-) => {
+): Promise<LoginResponse> => {
   const validatedFields = LoginSchema.safeParse(values);
 
   if (!validatedFields.success) {
@@ -33,19 +38,6 @@ export const login = async (
   if (!existingUser || !existingUser.email || !existingUser.password) {
     return { error: 'E-mail não cadastrado no sistema!' };
   }
-
-  // if (!existingUser.emailVerified) {
-  //   const verificationToken = await generateVerificationToken(
-  //     existingUser.email
-  //   );
-
-  //   await sendVerificationEmail(
-  //     verificationToken.email,
-  //     verificationToken.token
-  //   );
-
-  //   return { success: 'E-mail de confirmação enviado!' };
-  // }
 
   if (existingUser.isTwoFactorEnabled && existingUser.email) {
     const isPasswordValid = await comparePassword(
@@ -91,6 +83,8 @@ export const login = async (
       await db.twoFactorConfirmation.create({
         data: { userId: existingUser.id },
       });
+
+      return { success: 'Login realizado com sucesso!' };
     } else {
       const twoFactorToken = await generateTwoFactorToken(existingUser.email);
       await sendTwoFactorTokenEmail(twoFactorToken.email, twoFactorToken.token);
@@ -105,6 +99,8 @@ export const login = async (
       password,
       redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
     });
+
+    return { success: 'Login realizado com sucesso!' };
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {

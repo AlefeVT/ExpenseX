@@ -52,17 +52,17 @@ export const LoginForm = () => {
     startTransition(() => {
       login(values, callbackUrl)
         .then((data) => {
-          if (data?.error) {
+          if ('error' in data) {
             form.reset();
             setError(data.error);
           }
 
-          if (data?.success) {
+          if ('success' in data && data.success) {
             form.reset();
             setSuccess(data.success);
           }
 
-          if (data?.twoFactor) {
+          if (data.twoFactor) {
             setShowTwoFactor(true);
           }
         })
